@@ -16,8 +16,10 @@ const LoginPage: React.FC = () => {
   const handleRegister = async () => {
     try {
       const response = await axios.post('http://localhost:8000/api/register', {
+        name,
         email,
         password,
+        password_confirmation
       });
 
       localStorage.setItem('token', response.data.token);
