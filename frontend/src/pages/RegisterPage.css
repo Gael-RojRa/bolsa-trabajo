@@ -21,7 +21,7 @@ ion-col h2 {
 }
 
 /* Imagen */
-ion-col img {
+ion-col .register-image {
      display: block;
      margin: 1rem auto;
      width: 150px;

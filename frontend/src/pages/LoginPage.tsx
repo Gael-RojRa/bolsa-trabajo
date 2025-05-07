@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
             <IonCol sizeLg="6" sizeMd="8" sizeXs="12">
               <h2>¡Bienvenido de Vuelta!</h2>
               {errorMessage && <IonText color="danger">{errorMessage}</IonText>}
-              <img src={HandFiveImg} alt="Welcome" />
+              <img className='login-image' src={HandFiveImg} alt="Welcome" />
               <IonInput
                 label="Email"
                 labelPlacement="floating"

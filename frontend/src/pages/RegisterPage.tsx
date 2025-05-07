@@ -36,7 +36,7 @@ const LoginPage: React.FC = () => {
             <IonCol sizeLg="6" sizeMd="8" sizeXs="12">
               <h2>¡Registrate Ahora!</h2>
               {errorMessage && <IonText color="danger">{errorMessage}</IonText>}
-              <img src={HandShakeImg} alt="Welcome" />
+              <img className='register-image' src={HandShakeImg} alt="Welcome" />
               <IonInput
                 label="Nombre"
                 labelPlacement="floating"
@@ -70,7 +70,7 @@ const LoginPage: React.FC = () => {
                 fill="outline"
                 type="password"
                 placeholder="Contraseña"
-                value={password}
+                value={password_confirmation}
                 onIonChange={(e) => setPasswordConfirmation(e.detail.value!)}
               ></IonInput>
               <IonText onClick={() => history.push('/login')}>
