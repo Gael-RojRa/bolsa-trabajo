@@ -1,0 +1,46 @@
+ion-row {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+}
+
+/* Centrado del contenido */
+ion-content {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+/* Título */
+ion-col h2 {
+     text-align: center;
+     font-size: 2rem;
+     font-weight: bold;
+     margin: 0;
+}
+
+/* Imagen */
+ion-col img {
+     display: block;
+     margin: 1rem auto;
+     width: 150px;
+}
+
+/* Inputs y botón */
+ion-input {
+     margin-top: 1rem;
+     display: block;
+}
+
+ion-text {
+     display: block;
+     margin-top: 2rem;
+     text-align: center;
+     cursor: pointer;
+}
+
+ion-button {
+     margin-top: 2rem;
+     --background: #4A9ED8;
+}
