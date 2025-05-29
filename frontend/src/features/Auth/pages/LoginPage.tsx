@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 import axios from 'axios';
-import HandFiveImg from '../../public/assets/hand-five.png';
-import './LoginPage.css';
+import HandFiveImg from '../assets/hand-five.png';
+import '../styles/LoginPage.css';
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -19,7 +20,7 @@ const LoginPage: React.FC = () => {
       });
 
       localStorage.setItem('token', response.data.token);
-      history.push('/home');
+      history.replace('/');
     } catch (error) {
       setErrorMessage('Credenciales incorrectas');
     }
