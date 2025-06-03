@@ -20,9 +20,10 @@ const LoginPage: React.FC = () => {
       });
 
       localStorage.setItem('token', response.data.token);
-      history.replace('/');
+      history.replace('/jobs');
     } catch (error) {
-      setErrorMessage('Credenciales incorrectas');
+      console.error('Error during login:', error);
+      setErrorMessage('Credenciales incorrectas. Por favor, inténtalo de nuevo.');  
     }
   };
 

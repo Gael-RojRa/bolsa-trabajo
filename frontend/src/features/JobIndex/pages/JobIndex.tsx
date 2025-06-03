@@ -1,6 +1,6 @@
 import React from 'react';
-import { IonPage, IonGrid, IonContent } from '@ionic/react';
-import { IonHeader, IonToolbar, IonSearchbar, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonItem, IonLabel, IonIcon, IonTabBar, IonTabButton, IonCol, IonRow } from '@ionic/react';
+import { IonPage, IonContent } from '@ionic/react';
+import { IonHeader, IonToolbar, IonSearchbar, IonLabel, IonIcon, IonTabBar, IonTabButton } from '@ionic/react';
 import { briefcaseOutline, personOutline } from 'ionicons/icons';
 import JobCard from '../components/JobCard';
 import PopularCompanyCard from '../components/PopularCompanyCard';
@@ -11,10 +11,33 @@ const JobIndex = () => {
   const job = {
     id: 1,
     title: 'Desarrollador Front-end',
-    logo: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
     workingHours: 'Tiempo completo',
-    salary: 1500
+    salary: 1500,
+    description: 'Buscamos un desarrollador front-end con experiencia en React para unirse a nuestro equipo.',
+    location: 'Madrid, España',
+    skills: ['React', 'JavaScript', 'CSS'],
+    company: {
+      id: 1,
+      name: 'Google',
+      logo: 'https://www.svgrepo.com/show/303108/google-icon-logo.svg'
+    }
   }
+
+  const job2 = {
+    id: 2,
+    title: 'Desarrollador Back-end',
+    workingHours: 'Medio tiempo',
+    salary: 1200,
+    description: 'Buscamos un desarrollador back-end con experiencia en Node.js para unirse a nuestro equipo.',
+    location: 'Barcelona, España',
+    skills: ['Node.js', 'Express', 'MongoDB'],
+    company: {
+      id: 2,
+      name: 'Facebook',
+      logo: 'https://www.facebook.com/images/fb_icon_325x325.png'
+    }
+  }
+
 
   return (
     <IonPage>
@@ -42,7 +65,7 @@ const JobIndex = () => {
             <h2>Ofertas Recientes</h2>
             <div className="offers__grid">
               <JobCard jobOffer={job} />
-              <JobCard jobOffer={job} />
+              <JobCard jobOffer={job2} />
               <JobCard jobOffer={job} />
               <JobCard jobOffer={job} />
               <JobCard jobOffer={job} />

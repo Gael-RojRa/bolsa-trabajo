@@ -8,11 +8,9 @@ const Home = () => {
 
   const history = useHistory();
 
-  function onLogin() {
-    history.push('/jobs');
+  function OnStart() {
+    history.push('/login');
   }
-
-
 
   return (
     <IonPage>
@@ -23,7 +21,7 @@ const Home = () => {
               <img className="welcome-img" src={WelcomeImage} alt="welcome" />
               <h1>Encuentra tu trabajo perfecto</h1>
               <p>Encontrar el trabajo de tus sueños más rapido y fácil desde el mismo lugar</p>
-              <IonButton onClick={onLogin} className="welcome-button" size='large'>
+              <IonButton onClick={OnStart} className="welcome-button" size='large'>
                 Comienza Ahora →
               </IonButton>
             </IonCol>
