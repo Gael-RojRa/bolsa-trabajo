@@ -12,9 +12,14 @@ const Home = () => {
               <img className="home-img" src={HomeImage} alt="home" />
               <h1>Encuentra tu trabajo perfecto</h1>
               <p>Encontrar el trabajo de tus sueños más rapido y fácil desde el mismo lugar</p>
-              <IonButton className="home-button" size='large'>
+              <IonButton
+                className="home-button"
+                size="large"
+                routerLink="/Offers"     /* o '/offers' si ya hay sesión */
+              >
                 Comienza Ahora →
               </IonButton>
+
             </IonCol>
           </IonRow>
         </IonGrid>
