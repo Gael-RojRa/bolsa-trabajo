@@ -1,0 +1,47 @@
+.popular-company-card {
+  width: 40dvw;
+}
+
+.popular-company-card__header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 8px;
+  left: 8px;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container {}
+
+.logo {}
+
+.company-name {
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+.popular-company-card__job {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  margin-top: 18px
+}
+
+.job__title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.job__info {
+  font-size: 0.8rem;
+  ;
+  margin: 0;
+}
+
+.job__info--ubication {
+  font-size: 0.7rem;
+}

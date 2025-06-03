@@ -1,0 +1,35 @@
+
+.padding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2%;
+}
+
+.popular-companies {
+  width: 100%;
+}
+
+.popular-companies__grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+  padding: 10px 1.5px;
+  height: fit-content;
+  gap: 12px;
+}
+
+.popular-companies__grid>* {
+  flex: 0 0 auto;
+}
+
+.offers__grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 import axios from 'axios';
-import HandShakeImg from '../../public/assets/hand-shake.png';
-import './RegisterPage.css';
+import HandShakeImg from '../assets/hand-shake.png';
+import '../styles/RegisterPage.css';
 
 const LoginPage: React.FC = () => {
   const [name, setName] = useState<string>('');
