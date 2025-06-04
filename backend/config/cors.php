@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173', 'http://localhost:3000'],
+    'allowed_origins' => ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:8100', 'http://192.168.0.4:8100', 'https://bolsafrontend.ticocr.org', 'https://bolsafrontend.ticocr.org'],
 
     'allowed_origins_patterns' => [],
 
