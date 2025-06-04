@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // o tu endpoint
+  baseURL: 'https://bolsabackend.ticocr.org/api', // o tu endpoint
   withCredentials: true, // si usás Sanctum para auth
 });
 

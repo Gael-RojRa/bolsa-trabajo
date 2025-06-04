@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/register', {
+      const response = await axios.post('http://bolsabackend.ticocr.org/api/register', {
         name,
         email,
         password,
