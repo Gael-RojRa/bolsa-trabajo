@@ -5,7 +5,10 @@ import LoginPage from './features/Auth/pages/LoginPage';
 import RegisterPage from './features/Auth/pages/RegisterPage';
 import Welcome from './features/Welcome/pages/Welcome';
 import JobIndex from './features/JobIndex/pages/JobIndex';
-
+import EmployerOffersPage from './features/Recruiter/pages/EmployerOffersPage';
+import OfferPostulationsPage from './features/Recruiter/pages/OfferPostulationsPage';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
+import { briefcaseOutline, personOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -43,6 +46,8 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
+      <Route exact path="/employer/offers" component={EmployerOffersPage} />
+      <Route exact path="/employer/offers/:id" component={OfferPostulationsPage} />
         <Route exact path="/login">
           <LoginPage />
         </Route>
@@ -55,8 +60,12 @@ const App: React.FC = () => (
         <Route exact path="/jobs">
           <JobIndex />
         </Route>
+
+
+
       </IonRouterOutlet>
     </IonReactRouter>
+    
   </IonApp>
 );
 

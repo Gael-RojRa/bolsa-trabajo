@@ -10,7 +10,8 @@ class Postulation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'offer_id'];
+
+    protected $fillable = ['user_id', 'offer_id', 'status'];
 
     public function user(): BelongsTo
     {

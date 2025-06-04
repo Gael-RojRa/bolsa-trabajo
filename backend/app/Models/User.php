@@ -63,6 +63,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Skill::class, 'user_skill');
     }
 
+
     /**
      * Relationship: User has many Postulations
      */
@@ -82,10 +83,11 @@ class User extends Authenticatable
     /**
      * Relationship: User has one Recruiter profile (if applicable)
      */
-    public function recruiter(): HasOne
-    {
-        return $this->hasOne(Recruiter::class);
-    }
+    public function recruiter()
+{
+    // 1 recruiter ←→ 1 user (clave foránea: user_id en recruiters)
+    return $this->hasOne(\App\Models\Recruiter::class);
+}
 
     /**
      * Example utility: check if the user is an admin
