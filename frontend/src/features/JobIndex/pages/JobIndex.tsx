@@ -8,6 +8,7 @@ import '../styles/JobIndex.css';
 import { OfferSimple } from '../../../../shared/interface/offer';
 import { getOffers } from '../services/offerService';
 
+
 const JobIndex = () => {
 
   const [offers, setOffers] = useState<OfferSimple[]>([]);
@@ -72,6 +73,10 @@ const JobIndex = () => {
           <IonIcon icon={personOutline} />
           <IonLabel>Perfil</IonLabel>
         </IonTabButton>
+        <IonTabButton tab="employerOffers" href="/employer/offers">
++          <IonIcon icon={briefcaseOutline} />
++          <IonLabel>Mis ofertas</IonLabel>
++        </IonTabButton>
       </IonTabBar>
     </IonPage>
   )
