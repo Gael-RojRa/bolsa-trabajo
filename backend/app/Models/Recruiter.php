@@ -23,8 +23,9 @@ class Recruiter extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function offers(): HasMany
+    public function offers()
     {
-        return $this->hasMany(Offer::class);
+        return $this->hasMany(\App\Models\Offer::class);
     }
+    
 }

@@ -32,6 +32,12 @@ class InitialDataSeeder extends Seeder
                 'password' => Hash::make('12345678'),
                 'role_id' => 1,
             ],
+            [
+                'name' => 'User Test',
+                'email' => 'user2@test.com',
+                'password' => Hash::make('12345678'),
+                'role_id' => 1,
+            ],
         ]);
 
         DB::table('companies')->insert([

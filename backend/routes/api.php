@@ -22,4 +22,17 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->post('/offers/apply', [PostulationController::class, 'apply']);
 
 
+use App\Http\Controllers\RecruiterController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    // 1) Ofertas del recruiter logueado
+    Route::get('/recruiter/offers',            [RecruiterController::class, 'myOffers']);
+
+    // 2) Postulaciones de una oferta concreta
+    Route::get('/offers/{offer}/postulations', [RecruiterController::class, 'offerPostulations']);
+
+    // 3) Aceptar / rechazar una postulación
+    Route::patch('/postulations/{postulation}/status',
+                 [RecruiterController::class, 'updatePostulationStatus']);
+});
 
