@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
-import axios from 'axios';
 import HandFiveImg from '../assets/hand-five.png';
 import '../styles/LoginPage.css';
 import api from '../../../../shared/utils/axios'
@@ -22,7 +21,11 @@ const LoginPage: React.FC = () => {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      history.replace('/jobs');
+      if (response.data.user.role_id === 1) {
+        history.push('/jobs');
+      } else {
+        history.push('/employer/offers');
+      }
     } catch (error) {
       console.error('Error during login:', error);
       setErrorMessage('Credenciales incorrectas. Por favor, inténtalo de nuevo.');  
