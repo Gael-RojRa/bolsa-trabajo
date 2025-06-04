@@ -49,3 +49,6 @@ ion-label {
     height: fit-content;
 }
 
+.button--skill {
+    margin-top: 0;
+}

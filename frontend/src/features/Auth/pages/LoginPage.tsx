@@ -4,6 +4,7 @@ import { IonContent, IonPage, IonInput, IonButton, IonText, IonGrid, IonRow, Ion
 import axios from 'axios';
 import HandFiveImg from '../assets/hand-five.png';
 import '../styles/LoginPage.css';
+import api from '../../../../shared/utils/axios'
 
 
 const LoginPage: React.FC = () => {
@@ -14,12 +15,13 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login', {
+      const response = await api.post('/login', {
         email,
         password,
       });
 
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       history.replace('/jobs');
     } catch (error) {
       console.error('Error during login:', error);
