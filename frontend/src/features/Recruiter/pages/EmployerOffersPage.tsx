@@ -19,13 +19,17 @@ import {
   IonItemDivider,
   IonFab,
   IonFabButton,
-  IonToast
+  IonToast,
+  IonButton as IonicButton,
+  IonRow,
+  IonCol
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getMyOffers } from '../../../shared/services/recruiterService';
-import { briefcaseOutline, peopleOutline, addOutline } from 'ionicons/icons';
+import { briefcaseOutline, peopleOutline, addOutline, createOutline } from 'ionicons/icons';
 import CreateOfferForm from '../components/CreateOfferForm';
+import EditOfferForm from '../components/EditOfferForm';
 
 interface Offer {
   id: number;
@@ -37,6 +41,8 @@ const EmployerOffersPage: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selectedOfferId, setSelectedOfferId] = useState<number | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const history = useHistory();
@@ -69,8 +75,24 @@ const EmployerOffersPage: React.FC = () => {
     setShowToast(true);
   };
 
+  const handleEditSuccess = () => {
+    loadOffers();
+    setToastMessage('¡Oferta actualizada exitosamente!');
+    setShowToast(true);
+  };
+
   const openCreateForm = () => {
     setShowCreateForm(true);
+  };
+
+  const openEditForm = (id: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Detener la propagación para evitar ir a la vista de postulaciones
+    setSelectedOfferId(id);
+    setShowEditForm(true);
+  };
+  
+  const handleCardClick = (id: number) => {
+    history.push(`/employer/offers/${id}`);
   };
 
   return (
@@ -116,22 +138,71 @@ const EmployerOffersPage: React.FC = () => {
             </div>
           ) : (
             <div className="offer-cards ion-padding-top">
+              <style>{
+                `.offer-card { 
+                  margin-bottom: 8px !important; 
+                  max-width: 650px !important; 
+                  margin-left: auto !important; 
+                  margin-right: auto !important; 
+                  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+                }`
+              }</style>
+              
               {offers.map(offer => (
-                <IonCard key={offer.id} onClick={() => history.push(`/employer/offers/${offer.id}`)} button className="offer-card">
-                  <IonCardHeader>
-                    <IonCardSubtitle>
-                      <IonBadge color="medium">{offer.postulations_count} postulaciones</IonBadge>
-                    </IonCardSubtitle>
-                    <div className="ion-padding-top">
-                      <h2>{offer.title}</h2>
+                <div className="offer-card" key={offer.id} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 15px',
+                  background: 'white',
+                  border: '1px solid #ddd',
+                  borderLeft: '4px solid #3880ff',
+                  borderRadius: '6px',
+                  marginBottom: '12px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                  width: '100%',
+                  maxWidth: '650px'
+                }}>
+                  <div 
+                    onClick={() => handleCardClick(offer.id)}
+                    style={{
+                      flex: '1',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px'
+                    }}
+                  >
+                    <span style={{ fontWeight: 'bold', color: '#333' }}>{offer.title}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', color: '#3880ff', fontSize: '13px', fontWeight: 500 }}>
+                      <IonIcon icon={peopleOutline} style={{ marginRight: '4px', fontSize: '16px' }} /> 
+                      <span>{offer.postulations_count}</span>
                     </div>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <div className="ion-text-end">
-                      <IonIcon icon={peopleOutline} /> {offer.postulations_count} candidatos
-                    </div>
-                  </IonCardContent>
-                </IonCard>
+                  </div>
+                  <button 
+                    onClick={(e) => openEditForm(offer.id, e)}
+                    style={{
+                      background: '#3880ff',
+                      border: 'none',
+                      color: 'white',
+                      padding: '8px',
+                      cursor: 'pointer',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 10,
+                      minWidth: '32px',
+                      minHeight: '32px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                    }}
+                  >
+                    <IonIcon icon={createOutline} style={{ fontSize: '16px' }} />
+                  </button>
+                </div>
               ))}
             </div>
           )}
@@ -149,6 +220,14 @@ const EmployerOffersPage: React.FC = () => {
           isOpen={showCreateForm} 
           onClose={() => setShowCreateForm(false)}
           onSuccess={handleCreateSuccess}
+        />
+        
+        {/* Formulario de edición de ofertas */}
+        <EditOfferForm 
+          isOpen={showEditForm} 
+          offerId={selectedOfferId}
+          onClose={() => setShowEditForm(false)}
+          onSuccess={handleEditSuccess}
         />
         
         {/* Toast para mostrar mensajes */}

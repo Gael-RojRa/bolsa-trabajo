@@ -16,18 +16,19 @@ class OfferResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'requirements' => $this->when(property_exists($this->resource, 'requirements'), $this->requirements),
             'salary' => $this->salary,
-            'area' => $this->area->area,
-            'location' => [
+            'area' => $this->area ? $this->area->area : null,
+            'location' => $this->location ? [
                 'country' => $this->location->country,
                 'city' => $this->location->city,
-            ],
-            'company' => [
+            ] : null,
+            'company' => $this->recruiter && $this->recruiter->company ? [
                 'name' => $this->recruiter->company->name,
                 'logo' => $this->recruiter->company->logo,
                 'description' => $this->recruiter->company->description,
-            ],
-            'skills' => $this->skills->pluck('skill'), // lista de habilidades requeridas
+            ] : null,
+            'skills' => $this->skills ? $this->skills->pluck('skill') : [], // lista de habilidades requeridas
         ];
     }
 }

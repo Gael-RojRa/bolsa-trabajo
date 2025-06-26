@@ -4,7 +4,7 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList,
+  
   IonItem,
   IonLabel,
   IonButton,
@@ -13,20 +13,12 @@ import {
   IonButtons,
   IonBackButton,
   IonIcon,
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-  IonCardTitle,
-  IonBadge,
+  IonAvatar,
+  IonChip,
   IonRefresher,
   IonRefresherContent,
   IonItemDivider,
-  IonAvatar,
-  IonChip,
   IonText,
-  IonGrid,
-  IonRow,
-  IonCol,
 } from "@ionic/react";
 import { useParams, useHistory } from "react-router";
 import { useState, useEffect } from "react";
@@ -115,68 +107,44 @@ export default function OfferPostulationsPage() {
 
   const renderPostulation = (p: Postulation) => {
     const { icon, color, text } = getStatusDetails(p.status);
-    
-    return (
-      <IonCard key={p.id} className="candidate-card ion-margin-bottom">
-        <IonCardHeader>
-          <IonGrid>
-            <IonRow className="ion-align-items-center">
-              <IonCol size="2">
-                <IonAvatar className="candidate-avatar">
-                  <div style={{ 
-                    backgroundColor: '#e0e0e0', 
-                    width: '100%', 
-                    height: '100%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center' 
-                  }}>
-                    <IonIcon icon={personOutline} />
-                  </div>
-                </IonAvatar>
-              </IonCol>
-              <IonCol>
-                <IonCardTitle>{p.candidate.name}</IonCardTitle>
-                <div className="candidate-email">
-                  <IonIcon icon={mailOutline} size="small" /> {p.candidate.email}
-                </div>
-              </IonCol>
-              <IonCol size="3" className="ion-text-end">
-                <IonChip color={color as any}>
-                  <IonIcon icon={icon} />
-                  <IonLabel>{text}</IonLabel>
-                </IonChip>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCardHeader>
 
-        <IonCardContent>
-          <div className="ion-padding-top">
-            {p.status === "pending" && (
-              <div className="ion-text-end">
-                <IonButton 
-                  color="success" 
-                  onClick={() => handleStatusChange(p.id, "accepted")}
-                  fill="outline"
-                  size="small"
-                  className="ion-margin-end">
-                  <IonIcon slot="start" icon={checkmarkCircleOutline} />
-                  Aceptar
-                </IonButton>
-                <IonButton 
-                  color="danger" 
-                  onClick={() => handleStatusChange(p.id, "rejected")}
-                  fill="outline"
-                  size="small">
-                  <IonIcon slot="start" icon={closeCircleOutline} />
-                  Rechazar
-                </IonButton>
-              </div>
-            )}
+    return (
+      <IonItem key={p.id} lines="full" className="postulation-item">
+        {/* Avatar */}
+        <IonAvatar slot="start">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, background: '#e0e0e0', borderRadius: '50%' }}>
+            <IonIcon icon={personOutline} />
           </div>
-        </IonCardContent>
-      </IonCard>
+        </IonAvatar>
+
+        {/* Nombre y correo */}
+        <IonLabel className="ion-text-wrap">
+          <h2 style={{ margin: 0, fontSize: '1rem' }}>{p.candidate.name}</h2>
+          <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--ion-color-medium)' }}>
+            <IonIcon icon={mailOutline} /> {p.candidate.email}
+          </p>
+        </IonLabel>
+
+        {/* Estado */}
+        <IonChip slot="end" color={color as any} style={{ marginInlineEnd: '8px' }}>
+          <IonIcon icon={icon} />
+          <IonLabel>{text}</IonLabel>
+        </IonChip>
+
+        {/* Acciones */}
+        {p.status === 'pending' && (
+          <div slot="end" style={{ display: 'flex', gap: 4 }}>
+            <IonButton size="small" color="success" fill="outline" onClick={() => handleStatusChange(p.id, 'accepted')}>
+              <IonIcon slot="start" icon={checkmarkCircleOutline} />
+              Aceptar
+            </IonButton>
+            <IonButton size="small" color="danger" fill="outline" onClick={() => handleStatusChange(p.id, 'rejected')}>
+              <IonIcon slot="start" icon={closeCircleOutline} />
+              Rechazar
+            </IonButton>
+          </div>
+        )}
+      </IonItem>
     );
   };
 

@@ -18,6 +18,7 @@ class Offer extends Model
         'location_id',
         'title',
         'description',
+        'requirements',
         'salary',
     ];
 
