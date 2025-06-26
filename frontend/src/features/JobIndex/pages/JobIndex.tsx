@@ -8,9 +8,7 @@ import '../styles/JobIndex.css';
 import { OfferSimple } from '../../../../shared/interface/offer';
 import { getOffers } from '../services/offerService';
 
-
 const JobIndex = () => {
-
   const [offers, setOffers] = useState<OfferSimple[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +17,6 @@ const JobIndex = () => {
       try {
         const offersData = await getOffers();
         setOffers(offersData);
-        console.log("Offers fetched successfully EFFECT:", offersData);
       } catch (error) {
         console.error("Error fetching offers:", error);
       } finally {
@@ -41,25 +38,36 @@ const JobIndex = () => {
 
       {/* Contenido principal */}
       <IonContent fullscreen>
-        <div className="padding">
-
-          <div className="popular-companies">
-            <h2>Empresas Populares</h2>
-            <div className="popular-companies__grid">
-              <PopularCompanyCard />
-              <PopularCompanyCard />
-              <PopularCompanyCard />
+        <div className="padding ion-padding">
+          {loading ? (
+            <div className="ion-text-center ion-padding">
+              <p>Cargando ofertas...</p>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="popular-companies">
+                <h2>Empresas Populares</h2>
+                <div className="popular-companies__grid">
+                  <PopularCompanyCard />
+                  <PopularCompanyCard />
+                  <PopularCompanyCard />
+                </div>
+              </div>
 
-          <div className="offers">
-            <h2>Ofertas Recientes</h2>
-            <div className="offers__grid">
-              {offers.map((offer, index) => (
-                <JobCard key={index} offer={offer} />
-              ))}
-            </div>
-          </div>
+              <div className="offers">
+                <h2>Ofertas Recientes</h2>
+                <div className="offers__grid">
+                  {offers.length > 0 ? (
+                    offers.map((offer, index) => (
+                      <JobCard key={index} offer={offer} />
+                    ))
+                  ) : (
+                    <p className="ion-text-center">No hay ofertas disponibles</p>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </IonContent>
 
@@ -67,18 +75,15 @@ const JobIndex = () => {
       <IonTabBar slot="bottom">
         <IonTabButton tab="explore" href="/jobs">
           <IonIcon icon={briefcaseOutline} />
-          <IonLabel>Explore</IonLabel>
+          <IonLabel>Explorar</IonLabel>
         </IonTabButton>
         <IonTabButton tab="profile" href="/profile">
           <IonIcon icon={personOutline} />
           <IonLabel>Perfil</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="employerOffers" href="/employer/offers">
-+          <IonIcon icon={briefcaseOutline} />
-+          <IonLabel>Mis ofertas</IonLabel>
-+        </IonTabButton>
       </IonTabBar>
     </IonPage>
-  )
-}
+  );
+};
+
 export default JobIndex;

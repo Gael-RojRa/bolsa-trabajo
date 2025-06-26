@@ -1,8 +1,8 @@
 import { IonCard, IonCardSubtitle, IonTitle } from "@ionic/react";
 import "../styles/JobCard.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import JobModal from "./JobModal";
-import { OfferDetail, OfferSimple } from "../../../../shared/interface/offer";
+import { OfferSimple } from "../../../../shared/interface/offer";
 
 interface Props {
   offer: OfferSimple;
@@ -16,16 +16,24 @@ const JobCard = ({ offer }: Props) => {
       <IonCard
         onClick={() => setModalOpen(true)}
         className="job-card"
+        button={true}
       >
         <div className="logo-container">
-          <img src={offer.company_logo} alt="logo" width="30" />
+          <img 
+            src={offer.company_logo} 
+            alt="logo" 
+            className="company-logo" 
+          />
         </div>
         <IonTitle className="job">
           <h2 className="job__title">{offer.title}</h2>
           <p className="job__time">{offer.workingHours}</p>
         </IonTitle>
+        <IonCardSubtitle className="company-name">
+          {offer.company_name}
+        </IonCardSubtitle>
         <IonCardSubtitle className="salary__text">
-          ~${offer.salary}/m
+          ${offer.salary}/mes
         </IonCardSubtitle>
       </IonCard>
 

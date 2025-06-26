@@ -1,7 +1,29 @@
-import { IonContent, IonPage, IonList, IonItem, IonLabel } from '@ionic/react';
+import {
+  IonContent,
+  IonPage,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardContent,
+  IonBadge,
+  IonIcon,
+  IonSpinner,
+  IonRefresher,
+  IonRefresherContent,
+  IonItemDivider,
+  IonFab,
+  IonFabButton,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getMyOffers } from '../../../shared/services/recruiterService';
+import { briefcaseOutline, peopleOutline, addOutline } from 'ionicons/icons';
 
 interface Offer {
   id: number;
@@ -11,34 +33,122 @@ interface Offer {
 
 const EmployerOffersPage: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
-    getMyOffers().then(res => setOffers(res.data.data));
+    loadOffers();
   }, []);
+
+  const loadOffers = async () => {
+    setLoading(true);
+    try {
+      const res = await getMyOffers();
+      setOffers(res.data.data);
+    } catch (error) {
+      console.error('Error cargando ofertas:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = (event: CustomEvent) => {
+    loadOffers().then(() => {
+      event.detail.complete();
+    });
+  };
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonTitle>Mis Ofertas de Empleo</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      
       <IonContent className="ion-padding">
-        <h2>Mis ofertas</h2>
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
+        
+        <div className="ion-padding-vertical">
+          <div className="ion-text-center ion-padding-bottom">
+            <h2 className="ion-no-margin">
+              <IonIcon 
+                icon={briefcaseOutline} 
+                style={{ fontSize: '1.2rem', verticalAlign: 'middle', marginRight: '8px' }} 
+              />
+              Panel de Reclutamiento
+            </h2>
+            <p className="ion-padding-horizontal ion-text-center ion-text-muted">
+              Gestiona tus ofertas de empleo y revisa las postulaciones de candidatos.
+            </p>
+          </div>
 
-        <IonList>
-          {offers.map(o => (
-            <IonItem
-              key={o.id}
-              button
-              onClick={() => history.push(`/employer/offers/${o.id}`)}
-            >
-              <IonLabel>
-                <h3>{o.title}</h3>
-                <p>{o.postulations_count} postulaciones</p>
-              </IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+          <IonItemDivider color="light">Ofertas Publicadas ({offers.length})</IonItemDivider>
+          
+          {loading ? (
+            <div className="ion-text-center ion-padding">
+              <IonSpinner name="circles" />
+              <p>Cargando tus ofertas...</p>
+            </div>
+          ) : offers.length === 0 ? (
+            <div className="ion-text-center ion-padding">
+              <p>No tienes ofertas publicadas actualmente.</p>
+              <IonButton onClick={() => console.log('Crear nueva oferta')}>
+                Crear tu primera oferta
+              </IonButton>
+            </div>
+          ) : (
+            <div className="offer-cards ion-padding-top">
+              {offers.map(offer => (
+                <IonCard key={offer.id} onClick={() => history.push(`/employer/offers/${offer.id}`)} button className="offer-card">
+                  <IonCardHeader>
+                    <IonCardSubtitle>
+                      <IonBadge color="medium">{offer.postulations_count} postulaciones</IonBadge>
+                    </IonCardSubtitle>
+                    <div className="ion-padding-top">
+                      <h2>{offer.title}</h2>
+                    </div>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <div className="ion-text-end">
+                      <IonIcon icon={peopleOutline} /> {offer.postulations_count} candidatos
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={() => console.log('Crear nueva oferta')}>
+            <IonIcon icon={addOutline} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
 };
+
+// Definición del botón fuera del componente
+const IonButton = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+  <button 
+    onClick={onClick}
+    style={{
+      background: '#3880ff',
+      color: 'white',
+      padding: '10px 20px',
+      borderRadius: '4px',
+      border: 'none',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      margin: '10px 0'
+    }}
+  >
+    {children}
+  </button>
+);
 
 export default EmployerOffersPage;

@@ -4,8 +4,6 @@ import { useHistory } from 'react-router-dom';
 import '../styles/Welcome.css';
 
 const Home = () => {
-
-
   const history = useHistory();
 
   function OnStart() {
@@ -14,14 +12,19 @@ const Home = () => {
 
   return (
     <IonPage>
-      <IonContent>
-        <IonGrid>
-          <IonRow>
-            <IonCol sizeLg="6" sizeMd="8" sizeXs="12">
+      <IonContent className="welcome-container">
+        <IonGrid className="ion-padding ion-text-center">
+          <IonRow className="ion-justify-content-center">
+            <IonCol sizeLg="6" sizeMd="8" sizeXs="12" className="welcome-col">
               <img className="welcome-img" src={WelcomeImage} alt="welcome" />
-              <h1>Encuentra tu trabajo perfecto</h1>
-              <p>Encontrar el trabajo de tus sueños más rapido y fácil desde el mismo lugar</p>
-              <IonButton onClick={OnStart} className="welcome-button" size='large'>
+              <h1 className="welcome-title">Encuentra tu trabajo perfecto</h1>
+              <p className="welcome-subtitle">Encontrar el trabajo de tus sueños más rapido y fácil desde el mismo lugar</p>
+              <IonButton 
+                onClick={OnStart} 
+                className="welcome-button" 
+                size="large"
+                expand="block"
+              >
                 Comienza Ahora →
               </IonButton>
             </IonCol>
