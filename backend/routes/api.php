@@ -27,7 +27,9 @@ use App\Http\Controllers\RecruiterController;
 Route::middleware('auth:sanctum')->group(function () {
     // 1) Ofertas del recruiter logueado
     Route::get('/recruiter/offers',            [RecruiterController::class, 'myOffers']);
-
+    // 1.1) Crear nueva oferta como recruiter
+    Route::post('/recruiter/offers',           [RecruiterController::class, 'createOffer']);
+    
     // 2) Postulaciones de una oferta concreta
     Route::get('/offers/{offer}/postulations', [RecruiterController::class, 'offerPostulations']);
 

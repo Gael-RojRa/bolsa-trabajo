@@ -19,11 +19,13 @@ import {
   IonItemDivider,
   IonFab,
   IonFabButton,
+  IonToast
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getMyOffers } from '../../../shared/services/recruiterService';
 import { briefcaseOutline, peopleOutline, addOutline } from 'ionicons/icons';
+import CreateOfferForm from '../components/CreateOfferForm';
 
 interface Offer {
   id: number;
@@ -34,6 +36,9 @@ interface Offer {
 const EmployerOffersPage: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -56,6 +61,16 @@ const EmployerOffersPage: React.FC = () => {
     loadOffers().then(() => {
       event.detail.complete();
     });
+  };
+
+  const handleCreateSuccess = () => {
+    loadOffers();
+    setToastMessage('¡Oferta creada exitosamente!');
+    setShowToast(true);
+  };
+
+  const openCreateForm = () => {
+    setShowCreateForm(true);
   };
 
   return (
@@ -95,7 +110,7 @@ const EmployerOffersPage: React.FC = () => {
           ) : offers.length === 0 ? (
             <div className="ion-text-center ion-padding">
               <p>No tienes ofertas publicadas actualmente.</p>
-              <IonButton onClick={() => console.log('Crear nueva oferta')}>
+              <IonButton onClick={openCreateForm}>
                 Crear tu primera oferta
               </IonButton>
             </div>
@@ -122,11 +137,28 @@ const EmployerOffersPage: React.FC = () => {
           )}
         </div>
 
+        {/* Botón flotante para crear nueva oferta */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={() => console.log('Crear nueva oferta')}>
+          <IonFabButton onClick={openCreateForm}>
             <IonIcon icon={addOutline} />
           </IonFabButton>
         </IonFab>
+        
+        {/* Formulario de creación de ofertas */}
+        <CreateOfferForm 
+          isOpen={showCreateForm} 
+          onClose={() => setShowCreateForm(false)}
+          onSuccess={handleCreateSuccess}
+        />
+        
+        {/* Toast para mostrar mensajes */}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={2000}
+          position="top"
+        />
       </IonContent>
     </IonPage>
   );
