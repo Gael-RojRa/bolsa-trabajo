@@ -28,8 +28,8 @@ import {
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { getMyOffers, getFinishedOffers, finishOffer } from '../../../shared/services/recruiterService';
-import { briefcaseOutline, peopleOutline, addOutline, createOutline } from 'ionicons/icons';
+import { getMyOffers, getFinishedOffers, finishOffer, deleteOffer } from '../../../shared/services/recruiterService';
+import { briefcaseOutline, peopleOutline, addOutline, createOutline, trashOutline } from 'ionicons/icons';
 import CreateOfferForm from '../components/CreateOfferForm';
 import EditOfferForm from '../components/EditOfferForm';
 
@@ -93,7 +93,16 @@ const EmployerOffersPage: React.FC = () => {
     setShowCreateForm(true);
   };
 
-  const finalizeOffer = async (id:number, e:React.MouseEvent) => {
+  const deleteOfferHandler = async (offerId:number, e:React.MouseEvent)=>{
+    e.stopPropagation();
+    if(!window.confirm('¿Eliminar oferta definitivamente?')) return;
+    try{
+      await deleteOffer(offerId);
+      setOffers(prev=>prev.filter(o=>o.id!==offerId));
+    }catch(err){console.error(err);}
+  };
+
+  const finalizeOffer = async (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     await finishOffer(id);
     loadOffers(segment);
@@ -214,43 +223,51 @@ const EmployerOffersPage: React.FC = () => {
                       <span>postulaciones</span>
                     </div>
                   </div>
-                  {segment==='published' && (
+                  <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                    {segment==='published' && (
+                      <button
+                        onClick={(e)=>finalizeOffer(offer.id,e)}
+                        style={{
+                          background: 'green',
+                          border: 'none',
+                          color: 'white',
+                          padding: '8px',
+                          cursor: 'pointer',
+                          borderRadius: '4px'
+                        }}
+                      >
+                        Finalizar
+                      </button>
+                    )}
+                    {segment==='published' && (
+                      <button
+                        onClick={(e)=>openEditForm(offer.id,e)}
+                        style={{
+                          background: '#3880ff',
+                          border: 'none',
+                          color: 'white',
+                          padding: '8px',
+                          cursor: 'pointer',
+                          borderRadius: '4px'
+                        }}
+                      >
+                        Editar
+                      </button>
+                    )}
                     <button
-                      onClick={(e) => finalizeOffer(offer.id, e)}
-                      style={{
-                        background: 'green',
-                        border: 'none',
-                        color: 'white',
-                        padding: '8px',
-                        cursor: 'pointer',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      Finalizar
-                    </button>
-                  )}
-                  {segment==='published' && (
-                    <button
-                      onClick={(e) => openEditForm(offer.id, e)}
-                      style={{
-                        background: '#3880ff',
-                        border: 'none',
-                        color: 'white',
-                        padding: '8px',
-                        cursor: 'pointer',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 10,
-                        minWidth: '32px',
-                        minHeight: '32px',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-                      }}
-                    >
-                      <IonIcon icon={createOutline} style={{ fontSize: '16px' }} />
-                    </button>
-                  )}
+                        onClick={(e)=>deleteOfferHandler(offer.id,e)}
+                        style={{
+                          background: 'red',
+                          border: 'none',
+                          color: 'white',
+                          padding: '8px',
+                          cursor: 'pointer',
+                          borderRadius: '4px'
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                  </div>
                 </div>
               ))}
             </div>

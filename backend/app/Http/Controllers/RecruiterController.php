@@ -129,6 +129,19 @@ class RecruiterController extends Controller
         return new OfferResource($offer);
     }
 
+    /** 1.17) Eliminar una oferta */
+    public function deleteOffer(Offer $offer)
+    {
+        $recruiter = Auth::user()->recruiter;
+        if ($offer->recruiter_id !== $recruiter->id) {
+            return response()->json(['message' => 'Acción no autorizada'], 403);
+        }
+        // Borrar también sus postulaciones para integridad (si no hay onDelete cascade)
+        $offer->postulations()->delete();
+        $offer->delete();
+        return response()->json(['message' => 'Oferta eliminada']);
+    }
+
     /** 1.2) Obtener detalles de una oferta específica como recruiter */
     public function getOffer(Offer $offer)
     {

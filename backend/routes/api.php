@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Finalizar y listar ofertas finalizadas
     Route::get('/recruiter/offers/finished', [RecruiterController::class, 'finishedOffers']);
     Route::patch('/recruiter/offers/{offer}/finish', [RecruiterController::class, 'finishOffer']);
+    Route::delete('/recruiter/offers/{offer}',           [RecruiterController::class, 'deleteOffer']);
     
     // 2) Postulaciones de una oferta concreta
     Route::get('/offers/{offer}/postulations', [RecruiterController::class, 'offerPostulations']);

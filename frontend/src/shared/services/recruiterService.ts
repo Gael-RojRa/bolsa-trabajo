@@ -61,6 +61,10 @@ export const updatePostulationStatus = async (
   return response.data;
 };
 
+export const deleteOffer = async (offerId:number)=>{
+  return axios.delete(`/recruiter/offers/${offerId}`);
+};
+
 export const finishOffer = async (offerId: number) => {
   return axios.patch(`/recruiter/offers/${offerId}/finish`);
 };
