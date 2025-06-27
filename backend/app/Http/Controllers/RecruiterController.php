@@ -27,7 +27,7 @@ class RecruiterController extends Controller
             
             // Construir query base con columnas seguras
             // Seleccionar todas las columnas para evitar problemas con columnas faltantes
-            $offersQuery = $recruiter->offers();
+            $offersQuery = $recruiter->offers()->published();
             // Agregar conteo de postulaciones solo si existe la tabla
             if (Schema::hasTable('postulations')) {
                 $offersQuery->withCount('postulations');
@@ -109,6 +109,26 @@ class RecruiterController extends Controller
         }
     }
     
+    /** 1.15) Ofertas finalizadas */
+    public function finishedOffers()
+    {
+        $recruiter = Auth::user()->recruiter;
+        $offers = $recruiter->offers()->finished()->latest()->get();
+        return OfferResource::collection($offers);
+    }
+
+    /** 1.16) Marcar una oferta como finalizada */
+    public function finishOffer(Offer $offer)
+    {
+        $recruiter = Auth::user()->recruiter;
+        if ($offer->recruiter_id !== $recruiter->id) {
+            return response()->json(['message' => 'Acción no autorizada'], 403);
+        }
+        $offer->status = 'finished';
+        $offer->save();
+        return new OfferResource($offer);
+    }
+
     /** 1.2) Obtener detalles de una oferta específica como recruiter */
     public function getOffer(Offer $offer)
     {

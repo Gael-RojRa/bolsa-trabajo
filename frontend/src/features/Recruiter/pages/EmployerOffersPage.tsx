@@ -22,11 +22,13 @@ import {
   IonToast,
   IonButton as IonicButton,
   IonRow,
-  IonCol
+  IonCol,
+  IonSegment,
+  IonSegmentButton
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { getMyOffers } from '../../../shared/services/recruiterService';
+import { getMyOffers, getFinishedOffers, finishOffer } from '../../../shared/services/recruiterService';
 import { briefcaseOutline, peopleOutline, addOutline, createOutline } from 'ionicons/icons';
 import CreateOfferForm from '../components/CreateOfferForm';
 import EditOfferForm from '../components/EditOfferForm';
@@ -39,6 +41,7 @@ interface Offer {
 
 const EmployerOffersPage: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [segment, setSegment] = useState<'published'|'finished'>('published');
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -51,10 +54,10 @@ const EmployerOffersPage: React.FC = () => {
     loadOffers();
   }, []);
 
-  const loadOffers = async () => {
+  const loadOffers = async (type: 'published' | 'finished' = 'published') => {
     setLoading(true);
     try {
-      const res = await getMyOffers();
+      const res = type==='published' ? await getMyOffers() : await getFinishedOffers();
       setOffers(res.data.data);
     } catch (error) {
       console.error('Error cargando ofertas:', error);
@@ -64,9 +67,14 @@ const EmployerOffersPage: React.FC = () => {
   };
 
   const handleRefresh = (event: CustomEvent) => {
-    loadOffers().then(() => {
+    loadOffers(segment).then(() => {
       event.detail.complete();
     });
+  };
+
+  const handleSegmentChange = (value: 'published'|'finished') => {
+    setSegment(value);
+    loadOffers(value);
   };
 
   const handleCreateSuccess = () => {
@@ -83,6 +91,14 @@ const EmployerOffersPage: React.FC = () => {
 
   const openCreateForm = () => {
     setShowCreateForm(true);
+  };
+
+  const finalizeOffer = async (id:number, e:React.MouseEvent) => {
+    e.stopPropagation();
+    await finishOffer(id);
+    loadOffers(segment);
+    setToastMessage('Oferta marcada como finalizada');
+    setShowToast(true);
   };
 
   const openEditForm = (id: number, event: React.MouseEvent) => {
@@ -122,7 +138,12 @@ const EmployerOffersPage: React.FC = () => {
             </p>
           </div>
 
-          <IonItemDivider color="light">Ofertas Publicadas ({offers.length})</IonItemDivider>
+          <IonSegment value={segment} onIonChange={e=>handleSegmentChange(e.detail.value as any)}>
+            <IonSegmentButton value="published">Publicadas</IonSegmentButton>
+            <IonSegmentButton value="finished">Finalizadas</IonSegmentButton>
+          </IonSegment>
+
+          <IonItemDivider color="light">{segment==='published'? 'Ofertas Publicadas' : 'Ofertas Finalizadas'} ({offers.length})</IonItemDivider>
           
           {loading ? (
             <div className="ion-text-center ion-padding">
@@ -182,6 +203,18 @@ const EmployerOffersPage: React.FC = () => {
                       <span>{offer.postulations_count}</span>
                     </div>
                   </div>
+                  {segment==='published' && (
+                    <button 
+                      onClick={(e) => finalizeOffer(offer.id, e)}
+                      style={{
+                        background: 'green',
+                        border: 'none',
+                        color: 'white',
+                        padding: '8px',
+                        cursor: 'pointer',
+                        borderRadius: '4px'
+                      }}>Finalizar</button>
+                  )}
                   <button 
                     onClick={(e) => openEditForm(offer.id, e)}
                     style={{

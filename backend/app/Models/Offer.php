@@ -21,6 +21,7 @@ class Offer extends Model
         'requirements',
         'salary',
         'working_hours',
+        'status',
     ];
 
     public function recruiter(): BelongsTo
@@ -41,6 +42,17 @@ class Offer extends Model
     public function postulations(): HasMany
     {
         return $this->hasMany(Postulation::class);
+    }
+
+    // Scopes
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
+    }
+
+    public function scopeFinished($query)
+    {
+        return $query->where('status', 'finished');
     }
 
     public function skills(): BelongsToMany

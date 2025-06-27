@@ -61,6 +61,14 @@ export const updatePostulationStatus = async (
   return response.data;
 };
 
+export const finishOffer = async (offerId: number) => {
+  return axios.patch(`/recruiter/offers/${offerId}/finish`);
+};
+
+export const getFinishedOffers = async () => {
+  return axios.get('/recruiter/offers/finished');
+};
+
 export const getLocations = async () => {
   const response = await axios.get('/locations');
   console.log('Locations:', response.data);

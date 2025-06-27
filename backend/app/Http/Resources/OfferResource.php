@@ -19,6 +19,7 @@ class OfferResource extends JsonResource
             'requirements' => $this->when(!is_null($this->requirements), $this->requirements),
             'working_hours' => $this->when(!is_null($this->working_hours), $this->working_hours),
             'salary' => $this->salary,
+            'status' => $this->status,
             'area' => $this->area ? $this->area->area : null,
             'location_id' => $this->location_id,
             'location' => $this->location ? [

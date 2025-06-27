@@ -34,9 +34,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // 1.1) Crear nueva oferta como recruiter
     Route::post('/recruiter/offers',           [RecruiterController::class, 'createOffer']);
     // 1.2) Obtener detalles de una oferta específica como recruiter
-    Route::get('/recruiter/offers/{offer}',    [RecruiterController::class, 'getOffer']);
+    Route::get('/recruiter/offers/{offer}',    [RecruiterController::class, 'getOffer'])->whereNumber('offer');
     // 1.3) Actualizar una oferta específica como recruiter
     Route::put('/recruiter/offers/{offer}',    [RecruiterController::class, 'updateOffer']);
+    // Finalizar y listar ofertas finalizadas
+    Route::get('/recruiter/offers/finished', [RecruiterController::class, 'finishedOffers']);
+    Route::patch('/recruiter/offers/{offer}/finish', [RecruiterController::class, 'finishOffer']);
     
     // 2) Postulaciones de una oferta concreta
     Route::get('/offers/{offer}/postulations', [RecruiterController::class, 'offerPostulations']);
