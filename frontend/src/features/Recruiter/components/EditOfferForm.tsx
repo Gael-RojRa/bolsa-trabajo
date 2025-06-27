@@ -19,7 +19,7 @@ import {
   IonIcon
 } from '@ionic/react';
 import { createOutline } from 'ionicons/icons';
-import { getOfferDetail, updateOffer } from '../../../shared/services/recruiterService';
+import { getOfferDetail, updateOffer, getLocations } from '../../../shared/services/recruiterService';
 
 // Interfaz para la oferta a editar
 interface Offer {
@@ -29,7 +29,7 @@ interface Offer {
   requirements?: string;
   salary: number | string;
   workingHours?: string;
-  location?: string;
+  location_id: number;
 }
 
 // Interfaz para el envío del formulario
@@ -40,7 +40,7 @@ interface OfferSubmitData {
   requirements?: string;
   salary: string;
   workingHours?: string;
-  location?: string;
+  location_id: number;
 }
 
 interface EditOfferFormProps {
@@ -58,9 +58,10 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
     requirements: '',
     salary: '',
     workingHours: '',
-    location: ''
+    location_id: 0
   });
   
+  const [locations, setLocations] = useState<any[]>([]);
   const [showLoading, setShowLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -70,6 +71,14 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
     // Cargar los datos de la oferta cuando se abre el modal y se tiene un ID válido
     if (isOpen && offerId) {
       loadOfferDetails(offerId);
+    }
+    if (isOpen) {
+      getLocations()
+        .then(data => {
+          setLocations(data);
+          console.log('Loaded locations:', data.length);
+        })
+        .catch(err => console.error('Error cargando ubicaciones', err));
     }
   }, [isOpen, offerId]);
   
@@ -86,28 +95,6 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
         throw new Error('Formato de datos inesperado');
       }
       
-      // Asegurarse de que la ubicación sea un string en formato amigable
-      let locationValue = '';
-      if (offerData.location) {
-        if (typeof offerData.location === 'string') {
-          locationValue = offerData.location;
-        } else if (typeof offerData.location === 'object') {
-          // Intentar extraer valores amigables para el usuario
-          const loc = offerData.location;
-          if (loc.city && loc.country) {
-            locationValue = `${loc.city}, ${loc.country}`;
-          } else if (loc.city) {
-            locationValue = loc.city;
-          } else if (loc.country) {
-            locationValue = loc.country;
-          } else {
-            // Si no podemos extraer algo útil, usamos vacío
-            locationValue = '';
-          }
-          console.warn('La ubicación es un objeto, se convierte a string amigable:', locationValue);
-        }
-      }
-
       setFormData({
         id: offerData.id,
         title: offerData.title || '',
@@ -115,7 +102,7 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
         requirements: offerData.requirements || '',
         salary: offerData.salary || 0,
         workingHours: offerData.working_hours || offerData.workingHours || '',
-        location: locationValue
+        location_id: offerData.location_id || 0
       });
       
       console.log('Formulario actualizado con datos:', offerData);
@@ -129,11 +116,10 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
   };
   
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    const name = e.target?.name;
+    const value = e.detail?.value ?? e.target?.value;
+    if (!name) return;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -166,7 +152,7 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
         requirements: formData.requirements?.trim() || '',
         salary: salaryValue.toString(), // Asegurar que sea string como espera la API
         workingHours: formData.workingHours?.trim() || '',
-        location: formData.location?.trim() || ''
+        location_id: formData.location_id
       };
       
       console.log('Enviando datos al servidor:', submitData);
@@ -270,13 +256,18 @@ const EditOfferForm: React.FC<EditOfferFormProps> = ({ isOpen, offerId, onClose,
                 </IonItem>
                 
                 <IonItem>
-                  <IonLabel position="stacked">Ubicación</IonLabel>
-                  <IonInput
-                    name="location"
-                    value={formData.location}
-                    onIonChange={handleChange}
-                    placeholder="Ej: Ciudad, País o Remoto"
-                  ></IonInput>
+                  <IonLabel position="stacked">Ubicación *</IonLabel>
+                  <IonSelect
+                    value={formData.location_id}
+                    placeholder="Selecciona ubicación"
+                    onIonChange={(e)=> setFormData({...formData, location_id: e.detail.value})}
+                  >
+                    {locations.map(loc => (
+                      <IonSelectOption key={loc.id} value={loc.id}>
+                        {loc.city}, {loc.country}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
                 </IonItem>
                 
                 <div className="ion-padding-top">

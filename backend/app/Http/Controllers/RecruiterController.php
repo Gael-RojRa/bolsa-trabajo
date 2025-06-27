@@ -63,12 +63,12 @@ class RecruiterController extends Controller
     {
         // Validación de campos
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string',
             'description' => 'required|string',
+            'salary' => 'required|numeric',
             'requirements' => 'nullable|string',
-            'salary' => 'required|numeric|min:0',
-            'workingHours' => 'nullable|string|max:100',
-            'location' => 'nullable|string|max:255',
+            'workingHours' => 'nullable|string',
+            'location_id' => 'required|exists:locations,id',
         ]);
         
         try {
@@ -84,11 +84,12 @@ class RecruiterController extends Controller
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'],
                 'requirements' => $validatedData['requirements'] ?? null,
+                'working_hours' => $validatedData['workingHours'] ?? null,
                 'salary' => $validatedData['salary'],
                 'recruiter_id' => $recruiter->id,
-                // Usar valores por defecto o null para los campos requeridos por el modelo pero no enviados desde el frontend
-                'area_id' => 1, // Área por defecto (puedes ajustar según tus necesidades)
-                'location_id' => 1, // Ubicación por defecto (puedes ajustar según tus necesidades)
+                // Valores obligatorios
+                'area_id' => 1, // Ajustar según lógica real
+                'location_id' => $validatedData['location_id'],
             ];
             
             // Crear y guardar la oferta con los datos completos
@@ -152,9 +153,12 @@ class RecruiterController extends Controller
             if (isset($data['workingHours'])) {
                 $updateData['working_hours'] = $data['workingHours'];
             }
+            if (isset($data['requirements'])) {
+                $updateData['requirements'] = $data['requirements'];
+            }
             
-            if (isset($data['location']) && !is_array($data['location'])) {
-                $updateData['location'] = $data['location'];
+            if (isset($data['location_id'])) {
+                $updateData['location_id'] = $data['location_id'];
             }
             
             // Usar update en lugar de save para evitar problemas con columnas adicionales

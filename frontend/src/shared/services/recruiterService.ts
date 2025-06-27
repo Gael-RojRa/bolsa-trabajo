@@ -2,15 +2,13 @@ import axios from '../api/axiosInstance';// la misma instancia que usas para log
 
 export const getMyOffers = () => axios.get('/recruiter/offers');
 
-interface OfferFormData {
+export interface OfferFormData {
   title: string;
   description: string;
   requirements?: string;
   salary: string;
   workingHours?: string;
-  location?: string;
-  company_name?: string;
-  company_logo?: string;
+  location_id: number;
 }
 
 export const createOffer = async (offerData: OfferFormData) => {
@@ -36,7 +34,7 @@ export const updateOffer = async (offerId: number, offerData: OfferFormData) => 
       // Asegurar que los campos opcionales sean al menos string vacíos
       requirements: offerData.requirements || '',
       workingHours: offerData.workingHours || '',
-      location: offerData.location || ''
+      location_id: offerData.location_id
     };
     
     const response = await axios.put(`/recruiter/offers/${offerId}`, cleanData);
@@ -60,5 +58,11 @@ export const updatePostulationStatus = async (
 ) => {
   const response = await axios.patch(`/postulations/${postulationId}/status`, { status });
   console.log('Updated Postulation:', response.data);
+  return response.data;
+};
+
+export const getLocations = async () => {
+  const response = await axios.get('/locations');
+  console.log('Locations:', response.data);
   return response.data;
 };

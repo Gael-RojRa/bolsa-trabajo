@@ -8,6 +8,9 @@ use App\Http\Controllers\PostulationController;
 
 Route::post('/register', [AuthController::class, 'signUp']);
 Route::post('/login', [AuthController::class, 'signIn']);
+
+// Public endpoint for locations
+Route::get('/locations', [\App\Http\Controllers\LocationController::class, 'index']);
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::get('/offers', [App\Http\Controllers\OfferController::class, 'index']);
 //     Route::get('/offers/{id}', [App\Http\Controllers\OfferController::class, 'show']);
@@ -23,6 +26,7 @@ Route::middleware('auth:sanctum')->post('/offers/apply', [PostulationController:
 
 
 use App\Http\Controllers\RecruiterController;
+use App\Http\Controllers\LocationController;
 
 Route::middleware('auth:sanctum')->group(function () {
     // 1) Ofertas del recruiter logueado

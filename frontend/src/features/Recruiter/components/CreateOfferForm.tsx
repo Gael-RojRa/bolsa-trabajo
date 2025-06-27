@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -17,7 +17,7 @@ import {
   IonLoading,
   IonAlert
 } from '@ionic/react';
-import { createOffer } from '../../../shared/services/recruiterService';
+import { createOffer, getLocations } from '../../../shared/services/recruiterService';
 
 interface CreateOfferFormProps {
   isOpen: boolean;
@@ -25,28 +25,44 @@ interface CreateOfferFormProps {
   onSuccess: () => void;
 }
 
-const CreateOfferForm: React.FC<CreateOfferFormProps> = ({ isOpen, onClose, onSuccess }) => {
-  const [formData, setFormData] = useState({
+const initialFormData = {
     title: '',
     description: '',
     requirements: '',
     salary: '',
     workingHours: '',
+    location_id: 0,
     location: '',
     company_name: '',
-    company_logo: 'https://ionicframework.com/docs/img/demos/card-media.png' // Default logo
-  });
+    company_logo: 'https://ionicframework.com/docs/img/demos/card-media.png'
+  };
+
+  const CreateOfferForm: React.FC<CreateOfferFormProps> = ({ isOpen, onClose, onSuccess }) => {
+  const [formData, setFormData] = useState(initialFormData);
+  
+  const [locations, setLocations] = useState<any[]>([]);
+  useEffect(() => {
+    getLocations()
+      .then(setLocations)
+      .catch(err => console.error('Error cargando ubicaciones', err));
+  }, []);
+
+  // Reset form each time the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(initialFormData);
+    }
+  }, [isOpen]);
   
   const [showLoading, setShowLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    const name = e.target?.name;
+    const value = e.detail?.value ?? e.target?.value;
+    if (!name) return;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,9 +77,11 @@ const CreateOfferForm: React.FC<CreateOfferFormProps> = ({ isOpen, onClose, onSu
     
     try {
       setShowLoading(true);
-      await createOffer(formData);
+      await createOffer({...formData, salary: formData.salary.toString()});
       setShowLoading(false);
       onSuccess();
+      // reset form for next use
+      setFormData(initialFormData);
       onClose();
     } catch (error) {
       console.error('Error al crear la oferta:', error);
@@ -139,10 +157,9 @@ const CreateOfferForm: React.FC<CreateOfferFormProps> = ({ isOpen, onClose, onSu
               <IonItem>
                 <IonLabel position="stacked">Jornada Laboral</IonLabel>
                 <IonSelect
-                  name="workingHours"
                   value={formData.workingHours}
-                  onIonChange={handleChange}
                   placeholder="Selecciona el tipo de jornada"
+                  onIonChange={(e) => setFormData({...formData, workingHours: e.detail.value})}
                 >
                   {workingHoursOptions.map(option => (
                     <IonSelectOption key={option} value={option}>
@@ -153,13 +170,18 @@ const CreateOfferForm: React.FC<CreateOfferFormProps> = ({ isOpen, onClose, onSu
               </IonItem>
               
               <IonItem>
-                <IonLabel position="stacked">Ubicación</IonLabel>
-                <IonInput
-                  name="location"
-                  value={formData.location}
-                  onIonChange={handleChange}
-                  placeholder="Ej: Ciudad, País o Remoto"
-                ></IonInput>
+                <IonLabel position="stacked">Ubicación *</IonLabel>
+                <IonSelect
+                  value={formData.location_id}
+                  placeholder="Selecciona ubicación"
+                  onIonChange={(e) => setFormData({...formData, location_id: e.detail.value})}
+                >
+                  {locations.map(loc => (
+                    <IonSelectOption key={loc.id} value={loc.id}>
+                      {loc.city}, {loc.country}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
               </IonItem>
               
               <div className="ion-padding-top">

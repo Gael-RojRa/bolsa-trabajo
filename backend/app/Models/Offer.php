@@ -20,6 +20,7 @@ class Offer extends Model
         'description',
         'requirements',
         'salary',
+        'working_hours',
     ];
 
     public function recruiter(): BelongsTo

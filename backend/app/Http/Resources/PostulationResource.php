@@ -11,7 +11,7 @@ class PostulationResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'status'     => property_exists($this->resource, 'status') && $this->status ? $this->status : 'pending',
+            'status'     => $this->status,
             'applied_at' => $this->created_at->toDateTimeString(),
             'candidate'  => [
                 'id'    => $this->user->id,
