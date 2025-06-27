@@ -69,6 +69,10 @@ export const getFinishedOffers = async () => {
   return axios.get('/recruiter/offers/finished');
 };
 
+export const getOfferDetails = async (offerId:number) => {
+  return axios.get(`/recruiter/offers/${offerId}`);
+};
+
 export const getLocations = async () => {
   const response = await axios.get('/locations');
   console.log('Locations:', response.data);

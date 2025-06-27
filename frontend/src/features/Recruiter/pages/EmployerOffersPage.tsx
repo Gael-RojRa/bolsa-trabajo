@@ -215,26 +215,28 @@ const EmployerOffersPage: React.FC = () => {
                         borderRadius: '4px'
                       }}>Finalizar</button>
                   )}
-                  <button 
-                    onClick={(e) => openEditForm(offer.id, e)}
-                    style={{
-                      background: '#3880ff',
-                      border: 'none',
-                      color: 'white',
-                      padding: '8px',
-                      cursor: 'pointer',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      zIndex: 10,
-                      minWidth: '32px',
-                      minHeight: '32px',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-                    }}
-                  >
-                    <IonIcon icon={createOutline} style={{ fontSize: '16px' }} />
-                  </button>
+                  {segment==='published' && (
+                    <button
+                      onClick={(e) => openEditForm(offer.id, e)}
+                      style={{
+                        background: '#3880ff',
+                        border: 'none',
+                        color: 'white',
+                        padding: '8px',
+                        cursor: 'pointer',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 10,
+                        minWidth: '32px',
+                        minHeight: '32px',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                      }}
+                    >
+                      <IonIcon icon={createOutline} style={{ fontSize: '16px' }} />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
