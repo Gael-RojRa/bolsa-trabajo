@@ -13,7 +13,8 @@ class OfferController extends Controller
 {
     public function index()
     {
-        $offers = Offer::with('recruiter.company')->get();
+        // Solo mostrar ofertas publicadas a los postulantes
+        $offers = Offer::published()->with('recruiter.company')->get();
         return OfferSimpleResource::collection($offers);
     }
 
