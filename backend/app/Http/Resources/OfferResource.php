@@ -32,6 +32,7 @@ class OfferResource extends JsonResource
                 'description' => $this->recruiter->company->description,
             ] : null,
             'skills' => $this->skills ? $this->skills->pluck('skill') : [], // lista de habilidades requeridas
+            'postulations_count' => $this->when(isset($this->postulations_count), (int) $this->postulations_count),
         ];
     }
 }

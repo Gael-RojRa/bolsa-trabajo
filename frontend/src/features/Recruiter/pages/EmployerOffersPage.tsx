@@ -158,53 +158,64 @@ const EmployerOffersPage: React.FC = () => {
               </IonButton>
             </div>
           ) : (
-            <div className="offer-cards ion-padding-top">
-              <style>{
-                `.offer-card { 
-                  margin-bottom: 8px !important; 
-                  max-width: 650px !important; 
-                  margin-left: auto !important; 
-                  margin-right: auto !important; 
-                  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
-                }`
-              }</style>
-              
+            <div className="offer-cards ion-padding-top" style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+              <style>{`
+                .offer-card {
+                  background: #ffffff;
+                  border-radius: 10px;
+                  padding: 16px 20px;
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                  display:flex;
+                  justify-content:space-between;
+                  align-items:center;
+                  gap:16px;
+                }
+                .offer-info {flex:1;min-width:0;}
+                .postulations {
+                  display:flex;
+                  align-items:center;
+                  gap:6px;
+                  color:#555;
+                  font-size:14px;
+                  flex-shrink:0;
+                }
+                .postulations .count {
+                  font-weight:600;
+                }
+                .offer-title {
+                  font-weight:600;
+                  font-size:15px;
+                  color:#222;
+                  white-space:nowrap;
+                  overflow:hidden;
+                  text-overflow:ellipsis;
+                }
+              `}</style>
+
               {offers.map(offer => (
                 <div className="offer-card" key={offer.id} style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '10px 15px',
-                  background: 'white',
-                  border: '1px solid #ddd',
-                  borderLeft: '4px solid #3880ff',
-                  borderRadius: '6px',
-                  marginBottom: '12px',
+                  padding: '14px 18px',
+                  
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '8px',
+                  marginBottom: '14px',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                   width: '100%',
                   maxWidth: '650px'
                 }}>
-                  <div 
-                    onClick={() => handleCardClick(offer.id)}
-                    style={{
-                      flex: '1',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px'
-                    }}
-                  >
-                    <span style={{ fontWeight: 'bold', color: '#333' }}>{offer.title}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', color: '#3880ff', fontSize: '13px', fontWeight: 500 }}>
-                      <IonIcon icon={peopleOutline} style={{ marginRight: '4px', fontSize: '16px' }} /> 
-                      <span>{offer.postulations_count}</span>
+                  <div className="offer-info" onClick={() => handleCardClick(offer.id)}>
+                    <span className="offer-title">{offer.title}</span>
+                    <div className="postulations">
+                      <IonIcon icon={peopleOutline} />
+                      <span className="count">{(offer as any).postulations_count ?? (offer as any).attributes?.postulations_count ?? 0}</span>
+                      <span>postulaciones</span>
                     </div>
                   </div>
                   {segment==='published' && (
-                    <button 
+                    <button
                       onClick={(e) => finalizeOffer(offer.id, e)}
                       style={{
                         background: 'green',
@@ -213,7 +224,10 @@ const EmployerOffersPage: React.FC = () => {
                         padding: '8px',
                         cursor: 'pointer',
                         borderRadius: '4px'
-                      }}>Finalizar</button>
+                      }}
+                    >
+                      Finalizar
+                    </button>
                   )}
                   {segment==='published' && (
                     <button

@@ -113,7 +113,7 @@ class RecruiterController extends Controller
     public function finishedOffers()
     {
         $recruiter = Auth::user()->recruiter;
-        $offers = $recruiter->offers()->finished()->latest()->get();
+        $offers = $recruiter->offers()->finished()->withCount('postulations')->latest()->get();
         return OfferResource::collection($offers);
     }
 
