@@ -21,6 +21,8 @@ Route::get('/locations', [\App\Http\Controllers\LocationController::class, 'inde
 Route::get('/offers', [OfferController::class, 'index']); // listado simplificado
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/offers/{id}', [OfferController::class, 'show']);
+    // Guardar token FCM del usuario autenticado
+    Route::post('/device-tokens', [\App\Http\Controllers\DeviceTokenController::class, 'store']);
 });
 Route::middleware('auth:sanctum')->post('/offers/apply', [PostulationController::class, 'apply']);
 

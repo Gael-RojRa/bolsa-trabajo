@@ -203,17 +203,16 @@ const EmployerOffersPage: React.FC = () => {
 
               {offers.map(offer => (
                 <div className="offer-card" key={offer.id} style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '14px 18px',
-                  
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '8px',
-                  marginBottom: '14px',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                  width: '100%',
-                  maxWidth: '650px'
+                  display:'flex',
+                  justifyContent:'space-between',
+                  alignItems:'center',
+                  padding:'16px 20px',
+                  borderRadius:'12px',
+                  background:'#fff',
+                  boxShadow:'0 4px 10px rgba(0,0,0,0.05)',
+                  marginBottom:'16px',
+                  width:'100%',
+                  maxWidth:'700px'
                 }}>
                   <div className="offer-info" onClick={() => handleCardClick(offer.id)}>
                     <span className="offer-title">{offer.title}</span>

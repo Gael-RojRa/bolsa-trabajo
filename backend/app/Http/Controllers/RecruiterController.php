@@ -7,6 +7,8 @@ use App\Http\Resources\PostulationResource;
 use App\Models\Offer;
 use App\Models\Postulation;
 use App\Models\Recruiter;
+use App\Models\DeviceToken;
+use Kreait\Firebase\Messaging\CloudMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -74,6 +76,10 @@ class RecruiterController extends Controller
         try {
             // Obtener el recruiter actual
             $recruiter = Auth::user()->recruiter;
+            Log::info('createOffer recruiter check', [
+                'user_id' => Auth::id(),
+                'has_recruiter' => (bool)$recruiter
+            ]);
             
             if (!$recruiter) {
                 return response()->json(['message' => 'Usuario no es un reclutador'], 403);
@@ -250,6 +256,38 @@ class RecruiterController extends Controller
         $postulation->status = $request->status;
         $postulation->save();
 
-        return response()->json(['message' => 'Estado actualizado.']);
+        // Enviar push si la postulación fue aceptada
+        if ($postulation->status === 'accepted' && Schema::hasTable('device_tokens')) {
+            Log::info('FCM: buscando tokens', ['user_id' => $postulation->user_id]);
+            $tokens = DeviceToken::where('user_id', $postulation->user_id)
+                        ->pluck('fcm_token')
+                        ->all();
+            if ($tokens && count($tokens)) {
+                Log::info('FCM: tokens encontrados', ['count'=>count($tokens)]);
+                try {
+                    $messaging = app('firebase.messaging');
+                    foreach ($tokens as $token) {
+                        Log::debug('FCM enviando a token', ['token'=>$token]);
+                        $message = CloudMessage::withTarget('token', $token)
+                                    ->withNotification([
+                                        'title' => '¡Postulación aprobada!',
+                                        'body'  => 'Tu postulación para '. $postulation->offer->title .' ha sido aceptada.'
+                                    ]);
+                        try {
+                            $messaging->send($message);
+                        } catch (\Kreait\Firebase\Exception\Messaging\NotFound $e) {
+                            // Token inválido o eliminado: quitarlo de la BD para no reintentar
+                            Log::warning('FCM token inválido, eliminado', ['token'=>$token]);
+                            DeviceToken::where('fcm_token', $token)->delete();
+                        }
+                    }
+                    Log::info('FCM enviado correctamente');
+                } catch (\Throwable $e) {
+                    Log::error('Error enviando push FCM', ['err' => $e->getMessage()]);
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Estado actualizado']);
     }
 }

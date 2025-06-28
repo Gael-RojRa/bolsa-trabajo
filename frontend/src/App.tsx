@@ -46,9 +46,13 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 
+import usePushRegistration from "./shared/usePushRegistration";
+
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  usePushRegistration();
+  return (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
@@ -67,4 +71,7 @@ const App: React.FC = () => (
   </IonApp>
 );
 
+};
+
 export default App;
+
