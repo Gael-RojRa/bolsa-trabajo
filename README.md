@@ -17,6 +17,15 @@ cp .env.example .env  # pegar aquí las claves públicas (apiKey, authDomain, me
 npm install
 npm run dev
 ```
+
+### Configurar Firebase
+1. Crear un proyecto en la consola de Firebase.
+2. **Backend**: descargar un "Service Account JSON" y poner su ruta absoluta en `.env` como `FIREBASE_CREDENTIALS=/ruta/al/archivo.json`.
+3. **Frontend**: en `frontend/.env` pegar los campos públicos `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID`.
+4. En Cloud Messaging generar las claves VAPID y agregar `VITE_FIREBASE_VAPID_KEY=` en el mismo `.env`.
+
+```
+
 API → http://localhost:8000   |  App → http://localhost:5173
 
 
