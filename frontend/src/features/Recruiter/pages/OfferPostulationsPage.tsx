@@ -134,7 +134,7 @@ export default function OfferPostulationsPage() {
         {/* Avatar */}
         <IonAvatar slot="start">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, background: '#e0e0e0', borderRadius: '50%' }}>
-            <IonIcon icon={personOutline} />
+            <IonIcon icon={personOutline} color="medium" />
           </div>
         </IonAvatar>
 
@@ -142,13 +142,13 @@ export default function OfferPostulationsPage() {
         <IonLabel className="ion-text-wrap">
           <h2 style={{ margin: 0, fontSize: '1rem' }}>{p.candidate.name}</h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--ion-color-medium)' }}>
-            <IonIcon icon={mailOutline} /> {p.candidate.email}
+            <IonIcon icon={mailOutline} color="medium" /> {p.candidate.email}
           </p>
         </IonLabel>
 
         {/* Estado */}
         <IonChip slot="end" color={color as any} style={{ marginInlineEnd: '8px' }}>
-          <IonIcon icon={icon} />
+          <IonIcon icon={icon} color="medium" />
           <IonLabel>{text}</IonLabel>
         </IonChip>
 
@@ -156,11 +156,11 @@ export default function OfferPostulationsPage() {
         {p.status === 'pending' && (
           <div slot="end" style={{ display: 'flex', gap: 4 }}>
             <IonButton size="small" color="success" fill="outline" onClick={() => handleStatusChange(p.id, 'accepted')}>
-              <IonIcon slot="start" color="light" icon={checkmarkCircleOutline} />
+              <IonIcon slot="start" icon={checkmarkCircleOutline} color="medium" />
               Aceptar
             </IonButton>
             <IonButton size="small" color="danger" fill="outline" onClick={() => handleStatusChange(p.id, 'rejected')}>
-              <IonIcon slot="start" color="light" icon={closeCircleOutline} />
+              <IonIcon slot="start" icon={closeCircleOutline} color="medium" />
               Rechazar
             </IonButton>
           </div>
@@ -194,26 +194,26 @@ export default function OfferPostulationsPage() {
             <IonCardContent>
               <IonList lines="none">
                 <IonItem>
-                  <IonIcon slot="start" icon={briefcaseOutline} style={{color:'#f4f5f8'}} />
-                  <IonLabel className="ion-text-wrap" style={{color:'#f4f5f8'}}>
+                  <IonIcon slot="start" icon={briefcaseOutline} color="medium" />
+                  <IonLabel className="ion-text-wrap">
                     <strong>Descripción:&nbsp;</strong>{offer.description || '-'}
                   </IonLabel>
                 </IonItem>
                 <IonItem>
-                  <IonIcon slot="start" icon={cashOutline} style={{color:'#f4f5f8'}} />
-                  <IonLabel className="ion-text-wrap" style={{color:'#f4f5f8'}}>
+                  <IonIcon slot="start" icon={cashOutline} color="medium" />
+                  <IonLabel className="ion-text-wrap">
                     <strong>Salario:&nbsp;</strong>{offer.salary || '-'}
                   </IonLabel>
                 </IonItem>
                 <IonItem>
-                  <IonIcon slot="start" icon={timeSharp} style={{color:'#f4f5f8'}} />
+                  <IonIcon slot="start" icon={timeSharp} color="medium" />
                   <IonLabel className="ion-text-wrap">
                     <strong>Jornada:&nbsp;</strong>{offer.working_hours || '-'}
                   </IonLabel>
                 </IonItem>
                 {offer.location && (
                   <IonItem>
-                    <IonIcon slot="start" icon={locationOutline} style={{color:'#f4f5f8'}} />
+                    <IonIcon slot="start" icon={locationOutline} color="medium" />
                     <IonLabel className="ion-text-wrap">
                       <strong>Ubicación:&nbsp;</strong>{offer.location.city}, {offer.location.country}
                     </IonLabel>
@@ -221,7 +221,7 @@ export default function OfferPostulationsPage() {
                 )}
                 {offer.requirements && (
                   <IonItem>
-                    <IonIcon slot="start" icon={listOutline} style={{color:'#f4f5f8'}} />
+                    <IonIcon slot="start" icon={listOutline} color="medium" />
                     <IonLabel className="ion-text-wrap">
                       <strong>Requisitos:&nbsp;</strong>{offer.requirements}
                     </IonLabel>
@@ -247,7 +247,7 @@ export default function OfferPostulationsPage() {
         </div>
 
         <IonItemDivider color="light" sticky>
-          <IonIcon icon={listOutline} style={{color:'#f4f5f8'}} />
+          <IonIcon icon={listOutline} color="medium" />
           Postulaciones ({postulations.length})
         </IonItemDivider>
 
