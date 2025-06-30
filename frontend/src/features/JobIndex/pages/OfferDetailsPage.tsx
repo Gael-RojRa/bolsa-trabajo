@@ -21,6 +21,7 @@ import {
   briefcaseOutline,
   cashOutline,
   timeOutline,
+  listOutline,
   locationOutline,
 } from 'ionicons/icons';
 import axiosInstance from '../../../shared/api/axiosInstance';
@@ -40,6 +41,7 @@ interface Offer {
   description?: string;
   salary?: string;
   working_hours?: string;
+  requirements?: string;
   location?: OfferLocation;
 }
 
@@ -91,6 +93,13 @@ const OfferDetailsPage: React.FC = () => {
               <IonCardTitle>{offer.title}</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
+              {offer.requirements && (
+                <IonItem lines="none">
+                  <IonIcon slot="start" icon={listOutline} color="medium" />
+                  <IonLabel>Requisitos: {offer.requirements}</IonLabel>
+                </IonItem>
+              )}
+
               {offer.description && (
                 <IonItem lines="none">
                   <IonIcon slot="start" icon={briefcaseOutline} color="medium" />

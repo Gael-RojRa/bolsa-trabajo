@@ -22,6 +22,7 @@ export interface OfferDetail {
     logo: string;
     description: string;
   };
+  requirements?: string;
   skills: string[];
 }
 

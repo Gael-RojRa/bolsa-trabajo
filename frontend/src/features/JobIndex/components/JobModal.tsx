@@ -105,7 +105,14 @@ const JobModal = ({ isOpen, onClose, OfferId }: JobModalProps) => {
 
             <IonSegmentView className="segment-view">
               <IonSegmentContent id="default">
-                <p> {offerDetail.description} </p>
+                {offerDetail.description && (<p>{offerDetail.description}</p>)}
+
+                {offerDetail.requirements && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <h4>Requisitos</h4>
+                    <p>{offerDetail.requirements}</p>
+                  </div>
+                )}
 
                 <div style={{ marginTop: "1rem" }}>
                   <h4>Aptitudes Esperadas</h4>

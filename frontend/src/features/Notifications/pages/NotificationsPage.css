@@ -1,6 +1,6 @@
 .notifications-list {
   max-width: 600px;
-  margin: 0 auto; /* center list on larger screens */
+  margin: 0 auto; 
 }
 
 .notification-item {
