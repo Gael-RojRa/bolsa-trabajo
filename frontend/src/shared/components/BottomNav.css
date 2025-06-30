@@ -1,0 +1,55 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  --ion-background-color: var(--ion-color-light);
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid var(--ion-color-medium-tint);
+}
+
+.bottom-nav__toolbar {
+  --padding-start: 0;
+  --padding-end: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+}
+
+.bottom-nav__button {
+  flex: 1 1 0;
+  max-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  --background: transparent;
+  --color: var(--ion-color-medium);
+  --border-radius: 0;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+  border: none;
+  --border-width: 0;
+  --box-shadow: none;
+}
+
+.bottom-nav__button.activated,
+.bottom-nav__button.router-link-active {
+  --color: var(--ion-color-primary);
+}
+
+.bottom-nav__button ion-icon {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+/* Prevent toolbar inner scroll overlap */
+.bottom-nav__button ion-label { font-size: 12px; line-height: 14px; }
+
+ion-content::part(scroll) {
+  padding-bottom: 60px; /* equal to toolbar height */
+}
+

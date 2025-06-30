@@ -36,4 +36,21 @@ class PostulationController extends Controller
             'message' => 'Postulación exitosa.'
         ], 201);
     }
+
+    /**
+     * Retorna las postulaciones aceptadas del usuario autenticado
+     */
+    public function accepted()
+    {
+        $user = Auth::user();
+
+        $postulations = Postulation::with(['offer.location'])
+            ->where('user_id', $user->id)
+            ->where('status', 'accepted')
+            ->latest()
+            ->get();
+
+        return \App\Http\Resources\PostulationResource::collection($postulations);
+    }
 }
+

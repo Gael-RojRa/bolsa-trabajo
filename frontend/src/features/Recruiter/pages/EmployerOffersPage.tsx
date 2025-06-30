@@ -160,12 +160,18 @@ const EmployerOffersPage: React.FC = () => {
               <p>Cargando tus ofertas...</p>
             </div>
           ) : offers.length === 0 ? (
-            <div className="ion-text-center ion-padding">
-              <p>No tienes ofertas publicadas actualmente.</p>
-              <IonButton onClick={openCreateForm}>
-                Crear tu primera oferta
-              </IonButton>
-            </div>
+            segment === 'published' ? (
+              <div className="ion-text-center ion-padding">
+                <p>No tienes ofertas publicadas actualmente.</p>
+                <IonButton onClick={openCreateForm}>
+                  Crear tu primera oferta
+                </IonButton>
+              </div>
+            ) : (
+              <div className="ion-text-center ion-padding">
+                <p>No hay ofertas finalizadas.</p>
+              </div>
+            )
           ) : (
             <div className="offer-cards ion-padding-top" style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
               <style>{`

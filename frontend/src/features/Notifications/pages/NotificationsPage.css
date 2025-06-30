@@ -1,0 +1,38 @@
+.notifications-list {
+  max-width: 600px;
+  margin: 0 auto; /* center list on larger screens */
+}
+
+.notification-item {
+  --inner-padding-start: 12px;
+  --inner-padding-end: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --min-height: 56px;
+  --background-hover: var(--ion-color-light-shade);
+  border-radius: 12px;
+  margin: 6px 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.notification-item ion-icon {
+  font-size: 20px;
+  margin-right: 4px;
+}
+
+.notification-item h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.notification-item .location {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+
+.notification-item ion-note {
+  font-size: 0.8rem;
+  font-weight: 600;
+}

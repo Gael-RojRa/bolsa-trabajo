@@ -9,13 +9,13 @@ use App\Http\Controllers\PostulationController;
 Route::post('/register', [AuthController::class, 'signUp']);
 Route::post('/login', [AuthController::class, 'signIn']);
 
-// Public endpoint for locations
+// endpoints publicos
 Route::get('/locations', [\App\Http\Controllers\LocationController::class, 'index']);
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::get('/offers', [App\Http\Controllers\OfferController::class, 'index']);
 //     Route::get('/offers/{id}', [App\Http\Controllers\OfferController::class, 'show']);
 
-//     // Additional routes can be added here
+//    
 // });
 
 Route::get('/offers', [OfferController::class, 'index']); // listado simplificado
@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/device-tokens', [\App\Http\Controllers\DeviceTokenController::class, 'store']);
 });
 Route::middleware('auth:sanctum')->post('/offers/apply', [PostulationController::class, 'apply']);
+// Accepted postulations for applicant
+Route::middleware('auth:sanctum')->get('/postulations/accepted', [PostulationController::class, 'accepted']);
 
 
 use App\Http\Controllers\RecruiterController;

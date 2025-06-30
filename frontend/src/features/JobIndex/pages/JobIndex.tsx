@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
-import { IonHeader, IonToolbar, IonSearchbar, IonLabel, IonIcon, IonTabBar, IonTabButton } from '@ionic/react';
-import { briefcaseOutline, personOutline } from 'ionicons/icons';
+import { IonHeader, IonToolbar, IonSearchbar } from '@ionic/react';
+
+
 import JobCard from '../components/JobCard';
 import PopularCompanyCard from '../components/PopularCompanyCard';
 import '../styles/JobIndex.css';
@@ -71,17 +72,7 @@ const JobIndex = () => {
         </div>
       </IonContent>
 
-      {/* TabBar de navegación */}
-      <IonTabBar slot="bottom">
-        <IonTabButton tab="explore" href="/jobs">
-          <IonIcon icon={briefcaseOutline} />
-          <IonLabel>Explorar</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="profile" href="/profile">
-          <IonIcon icon={personOutline} />
-          <IonLabel>Perfil</IonLabel>
-        </IonTabButton>
-      </IonTabBar>
+      
     </IonPage>
   );
 };
